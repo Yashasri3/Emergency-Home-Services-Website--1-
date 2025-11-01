@@ -43,7 +43,7 @@ const services = [
   { id: "carpenter", name: "Carpenter", icon: "🪚" },
   { id: "painter", name: "Painter", icon: "🎨" },
   { id: "cleaner", name: "Cleaner", icon: "🧹" },
-  { id: "ac-repair", name: "AC Repair", icon: "❄️" },
+  { id: "ac-repair", name: "AC Repair", icon: "❄" },
   { id: "gardener", name: "Gardener", icon: "🌿" },
 ];
 
@@ -155,5 +155,5 @@ app.get("/", (req, res) => res.send("🚀 Emergency Home Services API Active!"))
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
-  console.log(`🚀 Server running on http://localhost:${PORT}`)
+  console.log(🚀 Server running on http://localhost:${PORT})
 );
