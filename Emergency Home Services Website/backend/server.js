@@ -17,12 +17,18 @@ const dbName = "emergency_services";
 let users, requests;
 
 async function connectDB() {
-  await client.connect();
-  const db = client.db(dbName);
-  users = db.collection("users");
-  requests = db.collection("requests");
-  console.log("✅ Connected to MongoDB");
+  try {
+    await client.connect();
+    const db = client.db(dbName);
+    users = db.collection("users");
+    requests = db.collection("requests");
+    console.log("✅ Connected to MongoDB");
+  } catch (err) {
+    console.error("❌ Failed to connect to MongoDB:", err);
+    process.exit(1);
+  }
 }
+
 connectDB();
 
 // Middleware
@@ -150,10 +156,35 @@ app.put("/api/requests/:id", verifyToken, async (req, res) => {
   res.json({ message: "Status updated" });
 });
 
+// --- ADMIN: create worker (protected)
+app.post("/api/admin/create-worker", verifyToken, async (req, res) => {
+  // only allow admin users
+  if (req.user?.role !== "admin") return res.status(403).json({ message: "Forbidden" });
+
+  const { name, email, password, occupation } = req.body;
+  if (!name || !email || !password || !occupation)
+    return res.status(400).json({ message: "Missing fields" });
+
+  const existing = await users.findOne({ email });
+  if (existing) return res.status(400).json({ message: "Email exists" });
+
+  const hash = await bcrypt.hash(password, 10);
+  await users.insertOne({
+    name,
+    email,
+    password: hash,
+    role: "worker",
+    occupation,
+    createdAt: new Date(),
+  });
+
+  res.json({ message: "Worker created" });
+});
+
 // --- Root route
 app.get("/", (req, res) => res.send("🚀 Emergency Home Services API Active!"));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
-  console.log(🚀 Server running on http://localhost:${PORT})
+  console.log(`🚀 Server running on http://localhost:${PORT}`)
 );

@@ -7,7 +7,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from ".
 
 
 
-const API_URL = "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
 
 export function LandingPage({ onLoginSuccess }: any) {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,7 @@ export function LandingPage({ onLoginSuccess }: any) {
     const password = form.password.value;
 
     try {
-      const res = await fetch(`${API_URL}/register`, {
+  const res = await fetch(`${API_BASE}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password, role, occupation }),
@@ -49,7 +49,7 @@ export function LandingPage({ onLoginSuccess }: any) {
     const password = form.password.value;
 
     try {
-      const res = await fetch(`${API_URL}/login`, {
+  const res = await fetch(`${API_BASE}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

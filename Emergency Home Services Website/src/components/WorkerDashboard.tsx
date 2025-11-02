@@ -5,10 +5,11 @@ import { Button } from "./ui/button";
 import { toast } from "sonner";
 
 export function WorkerDashboard({ user, onLogout }: any) {
+  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
   const [requests, setRequests] = useState<any[]>([]);
 
   const fetchRequests = async () => {
-    const res = await fetch("http://localhost:5000/api/requests/worker", {
+    const res = await fetch(`${API_BASE}/api/requests/worker`, {
       headers: { Authorization: `Bearer ${user.token}` },
     });
     setRequests(await res.json());
@@ -19,7 +20,7 @@ export function WorkerDashboard({ user, onLogout }: any) {
   }, []);
 
   const updateStatus = async (id: string, status: string) => {
-    await fetch(`http://localhost:5000/api/requests/${id}`, {
+    await fetch(`${API_BASE}/api/requests/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

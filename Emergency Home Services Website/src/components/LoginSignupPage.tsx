@@ -11,6 +11,7 @@ import {
 import { toast } from "sonner";
 
 export function LoginSignupPage({ onLoginSuccess }: { onLoginSuccess: (data: any) => void }) {
+  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
     name: "",
@@ -23,7 +24,7 @@ export function LoginSignupPage({ onLoginSuccess }: { onLoginSuccess: (data: any
   const [isSendingReset, setIsSendingReset] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/services")
+    fetch(`${API_BASE}/api/services`)
       .then((r) => r.json())
       .then(setOccupations)
       .catch(() => toast.error("Failed to load services"));
@@ -34,7 +35,7 @@ export function LoginSignupPage({ onLoginSuccess }: { onLoginSuccess: (data: any
     const endpoint = isLogin ? "/api/login" : "/api/register";
 
     try {
-      const res = await fetch(`http://localhost:5000${endpoint}`, {
+      const res = await fetch(`${API_BASE}${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -61,7 +62,7 @@ export function LoginSignupPage({ onLoginSuccess }: { onLoginSuccess: (data: any
     }
     setIsSendingReset(true);
     try {
-      const res = await fetch("http://localhost:5000/api/request-reset-code", {
+      const res = await fetch(`${API_BASE}/api/request-reset-code`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email }),

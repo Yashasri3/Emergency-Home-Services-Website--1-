@@ -5,13 +5,14 @@ import { Input } from "./ui/input";
 import { toast } from "sonner";
 
 export function UserDashboard({ user, onLogout }: any) {
+  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
   const [services, setServices] = useState<any[]>([]);
   const [workers, setWorkers] = useState<any[]>([]);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [booking, setBooking] = useState<any>(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/services")
+    fetch(`${API_BASE}/api/services`)
       .then((r) => r.json())
       .then(setServices)
       .catch(() => toast.error("Failed to load services"));
@@ -20,7 +21,7 @@ export function UserDashboard({ user, onLogout }: any) {
   const loadWorkers = async (occupation: string) => {
     setSelectedService(occupation);
     const res = await fetch(
-      `http://localhost:5000/api/workers?occupation=${occupation}`
+      `${API_BASE}/api/workers?occupation=${occupation}`
     );
     setWorkers(await res.json());
   };
@@ -41,7 +42,7 @@ export function UserDashboard({ user, onLogout }: any) {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/requests", {
+      const res = await fetch(`${API_BASE}/api/requests`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
