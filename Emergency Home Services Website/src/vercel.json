@@ -1,13 +1,18 @@
 {
-  "publicSource": "src",
   "builds": [
     {
       "src": "src/index.html",
-      "use": "@vercel/static"
+      "use": "@vercel/static-build",
+      "config": { "distDir": "src" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/src/index.html"
     }
   ]
 }
-
 
 
 
