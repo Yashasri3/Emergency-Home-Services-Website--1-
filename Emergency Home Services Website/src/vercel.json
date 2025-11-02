@@ -1,0 +1,14 @@
+{
+  "publicSource": "src",
+  "builds": [
+    {
+      "src": "src/index.html",
+      "use": "@vercel/static"
+    }
+  ]
+}
+
+
+
+
+
